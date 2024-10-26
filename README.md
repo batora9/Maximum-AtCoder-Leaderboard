@@ -1,3 +1,9 @@
+# Maximum AtCoder Leaderboard
+
+MaximumのメンバーのAtCoderのレートを取得し、順位表を作成するアプリケーションです。
+
+月間や年間のレート増減を確認することができます。
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
