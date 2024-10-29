@@ -73,6 +73,7 @@ function App() {
   // ページの読み込み時にgetAtCoderDataを実行
   useEffect(() => {
     getAtCoderData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
