@@ -10,10 +10,16 @@ function App() {
   const [filter, setFilter] = useState("lifetime");
 
   // プロキシサーバー経由でデータを取得
-  const fetchData = async (user) => {
-    const url = `http://localhost:5000/api/atcoder/${user}`;
+  const fetchData = async (users) => {
+    const url = `https://atcoder-api.batoran.com/api/atcoder/users`;
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(users),
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -26,9 +32,8 @@ function App() {
 
   // ページを読み込んだときにデータを取得して表示
   const getAtCoderData = async () => {
-    const promises = members.map((member) => fetchData(member));
-    const results = await Promise.all(promises);
-    setData(results);
+    const data = await fetchData(members);
+    setData(data);
   };
 
   const selectedData = useMemo(() => {
