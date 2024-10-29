@@ -6,9 +6,9 @@ compatibility_flags = [ "nodejs_compat" ]
 # [vars]
 # MY_VAR = "my-variable"
 
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+[[kv_namespaces]]
+binding = "USER_CACHE"
+id = "7da15bc5a48844c899825791f1de46c3"
 
 # [[r2_buckets]]
 # binding = "MY_BUCKET"
