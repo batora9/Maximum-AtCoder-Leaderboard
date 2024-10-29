@@ -8,12 +8,9 @@ MaximumのメンバーのAtCoderのレートを取得し、順位表を作成す
 
 1. `/client`ディレクトリに移動し、`npm install`を実行します。
 
-```bash
-cd client
-npm install
-```
+2. `/server`ディレクトリに移動し、`npm install`を実行します。
 
-2. `/src`ディレクトリに移動し、`App.js`内の`members`配列にメンバーのAtCoder名を書き換えます。
+3. `/src`ディレクトリに移動し、`App.js`内の`members`配列にメンバーのAtCoder名を書き換えます。
 
 ## 実行
 
