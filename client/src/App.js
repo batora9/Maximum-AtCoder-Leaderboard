@@ -3,7 +3,11 @@ import "./App.css";
 
 function App() {
   // AtCoderのユーザー名
-  const members = ["batora", "a01sa01to", "sor4chi"];
+  const members = [
+    "batora",
+    "a01sa01to",
+    "sor4chi"
+  ];
 
   // 表示するデータ
   const [data, setData] = useState(null);
