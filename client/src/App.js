@@ -2,36 +2,39 @@ import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 
 function App() {
-  const members = useMemo(() => [
-    "batora",
-    "a01sa01to",
-    "sor4chi",
-    "shigek",
-    "LLSTREAM",
-    "NakamuraItsuk",
-    "takashin",
-    "hrns",
-    "through",
-    "yukikamome316",
-    "kAsA02",
-    "Daradara_Kabos",
-    "Seiei",
-    "yotsubo",
-    "wa_mi",
-    "showGda4",
-    "nagi5064",
-    "JUSTICEyamamoto",
-    "zerozero_00",
-    "ebichiri",
-    "flyingflow",
-    "hirotsugu1415",
-    "kaki0729",
-    "nomanoma0121",
-    "rk4471",
-    "tokitomo0",
-    "yhop",
-    "yutaa01",
-  ], []);
+  const members = useMemo(
+    () => [
+      "batora",
+      "a01sa01to",
+      "sor4chi",
+      "shigek",
+      "LLSTREAM",
+      "NakamuraItsuk",
+      "takashin",
+      "hrns",
+      "through",
+      "yukikamome316",
+      "kAsA02",
+      "Daradara_Kabos",
+      "Seiei",
+      "yotsubo",
+      "wa_mi",
+      "showGda4",
+      "nagi5064",
+      "JUSTICEyamamoto",
+      "zerozero_00",
+      "ebichiri",
+      "flyingflow",
+      "hirotsugu1415",
+      "kaki0729",
+      "nomanoma0121",
+      "rk4471",
+      "tokitomo0",
+      "yhop",
+      "yutaa01",
+    ],
+    []
+  );
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState("monthly");
 
@@ -116,39 +119,44 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Maximum AtCoder Leaderboard</h1>
-      期間を指定:
-      <select value={filter} onChange={handleChange}>
-        <option value="lifetime">全期間</option>
-        <option value="monthly">月間</option>
-        <option value="yearly">年間</option>
-      </select>
-      {sortedDataWithNames.map((user, index) => (
-        <details key={index} className="user-details">
-          <summary>
-            {index + 1}. {user.username} 増分の合計: {user.totalIncrement}
-          </summary>
-          {user.data &&
-            user.data.map((item, i) => (
-              <div className="contest-details" key={i}>
-                <p>{item.ContestName}</p>
-                <p>
-                  終了:{" "}
-                  {new Date(item.EndTime).toLocaleString("ja-JP", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: false,
-                  })}
-                </p>
-                <p>増分: {item.NewRating - item.OldRating}</p>
-              </div>
-            ))}
-        </details>
-      ))}
+      <div className="container">
+        <h1>Maximum AtCoder Leaderboard</h1>
+        期間を指定:
+        <select value={filter} onChange={handleChange}>
+          <option value="lifetime">全期間</option>
+          <option value="monthly">月間</option>
+          <option value="yearly">年間</option>
+        </select>
+        {sortedDataWithNames.map((user, index) => (
+          <details key={index} className="user-details">
+            <summary>
+              {index + 1}. {user.username} 増分の合計: {user.totalIncrement}
+            </summary>
+            {user.data &&
+              user.data.map((item, i) => (
+                <div className="contest-details" key={i}>
+                  <p className="bold-details">{item.ContestName}</p>
+                  <p className="details">
+                    終了:{" "}
+                    {new Date(item.EndTime).toLocaleString("ja-JP", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                      hour12: false,
+                    })}
+                  </p>
+                  <p className="details">
+                    レート : {item.OldRating} → {item.NewRating}
+                  </p>
+                  <p className="bold-details">増分 : {item.NewRating - item.OldRating}</p>
+                </div>
+              ))}
+          </details>
+        ))}
+      </div>
     </div>
   );
 }

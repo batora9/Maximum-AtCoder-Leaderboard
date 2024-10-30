@@ -1,4 +1,16 @@
-/* Styling for summary to make it look clickable */
+.container {
+  padding: 0 24px;
+}
+
+.details {
+  margin: 4px;
+}
+
+.bold-details {
+  font-weight: bold;
+  margin: 4px;
+}
+
 .user-details summary {
   font-weight: bold;
   cursor: pointer;
@@ -14,7 +26,6 @@
   background-color: #e2e2e2;
 }
 
-/* Styling for contest details */
 .contest-details {
   padding: 10px;
   border: 1px solid #ccc;
