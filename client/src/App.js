@@ -14,6 +14,23 @@ function App() {
     "through",
     "yukikamome316",
     "kAsA02",
+    "Daradara_Kabos",
+    "Seiei",
+    "yotsubo",
+    "wa_mi",
+    "showGda4",
+    "nagi5064",
+    "JUSTICEyamamoto",
+    "zerozero_00",
+    "ebichiri",
+    "flyingflow",
+    "hirotsugu1415",
+    "kaki0729",
+    "nomanoma0121",
+    "rk4471",
+    "tokitomo0",
+    "yhop",
+    "yutaa01",
   ], []);
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState("monthly");
