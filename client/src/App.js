@@ -37,6 +37,7 @@ function App() {
   );
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState("monthly");
+  const [isLoading, setIsLoading] = useState(true); // 新しい状態変数
 
   // APIからデータを取得
   const fetchData = async (users) => {
@@ -61,11 +62,12 @@ function App() {
 
   // AtCoderのデータを取得
   const getAtCoderData = async () => {
+    setIsLoading(true); // データ取得開始時にローディング状態に設定
     const data = await fetchData(members);
     setData(data);
+    setIsLoading(false); // データ取得完了時にローディング状態を解除
   };
 
-  // フィルターを適用して空の配列を除外
   const selectedData = useMemo(() => {
     if (!data) return [];
     const filteredData = data.map((d, index) => {
@@ -90,11 +92,9 @@ function App() {
       return { username: members[index], data: filteredContests };
     });
 
-    // Remove entries with empty data arrays
     return filteredData.filter((entry) => entry.data.length > 0);
   }, [data, filter, members]);
 
-  // ユーザー名とデータを結合
   const sortedDataWithNames = useMemo(() => {
     return selectedData
       .map((entry) => ({
@@ -114,50 +114,55 @@ function App() {
 
   useEffect(() => {
     getAtCoderData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="App">
       <div className="container">
         <h1>Maximum AtCoder Leaderboard</h1>
-        期間を指定:
-        <select value={filter} onChange={handleChange}>
-          <option value="lifetime">全期間</option>
-          <option value="monthly">月間</option>
-          <option value="yearly">年間</option>
-        </select>
-        {sortedDataWithNames.map((user, index) => (
-          <details key={index} className="user-details">
-            <summary>
-              {index + 1}. {user.username} 増分の合計: {user.totalIncrement}
-            </summary>
-            {user.data &&
-              user.data.map((item, i) => (
-                <div className="contest-details" key={i}>
-                  <a href={`https://${item.ContestScreenName}`} className="bold-details">
-                    {item.ContestName}
-                  </a>
-                  <p className="details">
-                    終了:{" "}
-                    {new Date(item.EndTime).toLocaleString("ja-JP", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      hour12: false,
-                    })}
-                  </p>
-                  <p className="details">
-                    レート : {item.OldRating} → {item.NewRating}
-                  </p>
-                  <p className="bold-details">増分 : {item.NewRating - item.OldRating}</p>
-                </div>
-              ))}
-          </details>
-        ))}
+        {isLoading ? (
+          <div className="loading">Loading...</div> // 読み込み中の表示
+        ) : (
+          <>
+            期間を指定:
+            <select value={filter} onChange={handleChange}>
+              <option value="lifetime">全期間</option>
+              <option value="monthly">月間</option>
+              <option value="yearly">年間</option>
+            </select>
+            {sortedDataWithNames.map((user, index) => (
+              <details key={index} className="user-details">
+                <summary>
+                  {index + 1}. {user.username} 増分の合計: {user.totalIncrement}
+                </summary>
+                {user.data &&
+                  user.data.map((item, i) => (
+                    <div className="contest-details" key={i}>
+                      <a href={`https://${item.ContestScreenName}`} className="bold-details">
+                        {item.ContestName}
+                      </a>
+                      <p className="details">
+                        終了:{" "}
+                        {new Date(item.EndTime).toLocaleString("ja-JP", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          hour12: false,
+                        })}
+                      </p>
+                      <p className="details">
+                        レート : {item.OldRating} → {item.NewRating}
+                      </p>
+                      <p className="bold-details">増分 : {item.NewRating - item.OldRating}</p>
+                    </div>
+                  ))}
+              </details>
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
