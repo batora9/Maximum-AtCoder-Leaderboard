@@ -2,18 +2,11 @@ import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 
 function App() {
-  // AtCoderのユーザー名
-  const members = [
-    "batora",
-    "a01sa01to",
-    "sor4chi"
-  ];
-
-  // 表示するデータ
+  const members = ["batora", "a01sa01to", "sor4chi", "shigek", "LLSTREAM", "NakamuraItsuk", "takashin", "hrns", "through","yukikamome316", "kAsA02"];
   const [data, setData] = useState(null);
-  const [filter, setFilter] = useState("lifetime");
+  const [filter, setFilter] = useState("monthly");
 
-  // プロキシサーバー経由でデータを取得
+  // APIからデータを取得
   const fetchData = async (users) => {
     const url = `https://atcoder-api.batoran.com/api/atcoder/users`;
     try {
@@ -34,29 +27,28 @@ function App() {
     }
   };
 
-  // ページを読み込んだときにデータを取得して表示
+  // AtCoderのデータを取得
   const getAtCoderData = async () => {
     const data = await fetchData(members);
     setData(data);
   };
 
+  // フィルターを適用
   const selectedData = useMemo(() => {
     if (!data) return [];
-    console.log(data);
     if (filter === "lifetime") {
       return data;
     } else if (filter === "monthly") {
-      return data.map((d) => {
-        console.log(d);
-        return d.filter((item) => {
+      return data.map((d) =>
+        d.filter((item) => {
           const now = new Date();
           const end = new Date(item.EndTime);
           return (
             now.getMonth() === end.getMonth() &&
             now.getFullYear() === end.getFullYear()
           );
-        });
-      });
+        })
+      );
     } else if (filter === "yearly") {
       return data.map((d) =>
         d.filter((item) => {
@@ -68,16 +60,26 @@ function App() {
     }
   }, [data, filter]);
 
-  // comboboxの選択肢によってソートする
+  // ユーザー名とデータを結合
+  const sortedDataWithNames = useMemo(() => {
+    return selectedData
+      .map((d, index) => ({
+        username: members[index],
+        data: d,
+        totalIncrement: d.reduce(
+          (acc, item) => acc + (item.NewRating - item.OldRating),
+          0
+        ),
+      }))
+      .sort((a, b) => b.totalIncrement - a.totalIncrement);
+  }, [selectedData, members]);
+
   const handleChange = (e) => {
-    const value = e.target.value;
-    setFilter(value);
+    setFilter(e.target.value);
   };
 
-  // ページの読み込み時にgetAtCoderDataを実行
   useEffect(() => {
     getAtCoderData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -88,15 +90,18 @@ function App() {
         <option value="monthly">Monthly</option>
         <option value="yearly">Yearly</option>
       </select>
-      {selectedData.map((d, index) => (
+      {sortedDataWithNames.map((user, index) => (
         <div key={index}>
-          <h2>{members[index]}</h2>
-          {d &&
-            d.map((item, index) => (
-              <div key={index}>
-                <p>{item.ContestName}</p>
+          <h2>
+            {index + 1}. {user.username} 増分の合計: {user.totalIncrement}
+          </h2>
+          {user.data &&
+            user.data.map((item, i) => (
+              <div key={i}>
+                {/* Uncomment to display additional information */}
+                {/* <p>{item.ContestName}</p>
                 <p>終了: {item.EndTime}</p>
-                <p>増分: {item.NewRating - item.OldRating}</p>
+                <p>増分: {item.NewRating - item.OldRating}</p> */}
               </div>
             ))}
         </div>
