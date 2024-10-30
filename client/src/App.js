@@ -176,7 +176,7 @@ function App() {
                       </p>
                       <p
                         className={clsx({
-                          details: true,
+                          boldDetails: true,
                           positive: item.NewRating - item.OldRating > 0,
                           negative: item.NewRating - item.OldRating < 0,
                         })}
