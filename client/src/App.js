@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 
 function App() {
-  const members = [
+  const members = useMemo(() => [
     "batora",
     "a01sa01to",
     "sor4chi",
@@ -14,7 +14,7 @@ function App() {
     "through",
     "yukikamome316",
     "kAsA02",
-  ];
+  ], []);
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState("monthly");
 
@@ -72,7 +72,7 @@ function App() {
 
     // Remove entries with empty data arrays
     return filteredData.filter((entry) => entry.data.length > 0);
-  }, [data, filter]);
+  }, [data, filter, members]);
 
   // ユーザー名とデータを結合
   const sortedDataWithNames = useMemo(() => {
@@ -94,6 +94,7 @@ function App() {
 
   useEffect(() => {
     getAtCoderData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
