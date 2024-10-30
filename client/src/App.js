@@ -80,26 +80,26 @@ function App() {
   return (
     <div className="App">
       <h1>Maximum AtCoder Leaderboard</h1>
+      期間を指定:
       <select value={filter} onChange={handleChange}>
-        <option value="lifetime">Lifetime</option>
-        <option value="monthly">Monthly</option>
-        <option value="yearly">Yearly</option>
+        <option value="lifetime">全期間</option>
+        <option value="monthly">月間</option>
+        <option value="yearly">年間</option>
       </select>
       {sortedDataWithNames.map((user, index) => (
-        <div key={index}>
-          <h2>
+        <details key={index} className="user-details">
+          <summary>
             {index + 1}. {user.username} 増分の合計: {user.totalIncrement}
-          </h2>
+          </summary>
           {user.data &&
             user.data.map((item, i) => (
-              <div key={i}>
-                {/* Uncomment to display additional information */}
-                {/* <p>{item.ContestName}</p>
+              <div className="contest-details" key={i}>
+                <p>Contest Name: {item.ContestName}</p>
                 <p>終了: {item.EndTime}</p>
-                <p>増分: {item.NewRating - item.OldRating}</p> */}
+                <p>増分: {item.NewRating - item.OldRating}</p>
               </div>
             ))}
-        </div>
+        </details>
       ))}
     </div>
   );
