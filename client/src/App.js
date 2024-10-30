@@ -114,6 +114,7 @@ function App() {
 
   useEffect(() => {
     getAtCoderData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
