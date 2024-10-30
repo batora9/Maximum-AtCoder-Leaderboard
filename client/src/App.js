@@ -2,7 +2,19 @@ import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 
 function App() {
-  const members = ["batora", "a01sa01to", "sor4chi", "shigek", "LLSTREAM", "NakamuraItsuk", "takashin", "hrns", "through", "yukikamome316", "kAsA02"];
+  const members = [
+    "batora",
+    "a01sa01to",
+    "sor4chi",
+    "shigek",
+    "LLSTREAM",
+    "NakamuraItsuk",
+    "takashin",
+    "hrns",
+    "through",
+    "yukikamome316",
+    "kAsA02",
+  ];
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState("monthly");
 
@@ -40,17 +52,24 @@ function App() {
       const filteredContests = d.filter((item) => {
         const now = new Date();
         const end = new Date(item.EndTime);
-        const isSameMonth = now.getMonth() === end.getMonth() && now.getFullYear() === end.getFullYear();
+        const isSameMonth =
+          now.getMonth() === end.getMonth() &&
+          now.getFullYear() === end.getFullYear();
         const isSameYear = now.getFullYear() === end.getFullYear();
 
-        return item.ContestName && (
-          filter === "monthly" ? isSameMonth : filter === "yearly" ? isSameYear : true
+        return (
+          item.ContestName &&
+          (filter === "monthly"
+            ? isSameMonth
+            : filter === "yearly"
+            ? isSameYear
+            : true)
         );
       });
-      
+
       return { username: members[index], data: filteredContests };
     });
-    
+
     // Remove entries with empty data arrays
     return filteredData.filter((entry) => entry.data.length > 0);
   }, [data, filter]);
@@ -94,8 +113,19 @@ function App() {
           {user.data &&
             user.data.map((item, i) => (
               <div className="contest-details" key={i}>
-                <p>Contest Name: {item.ContestName}</p>
-                <p>終了: {item.EndTime}</p>
+                <p>{item.ContestName}</p>
+                <p>
+                  終了:{" "}
+                  {new Date(item.EndTime).toLocaleString("ja-JP", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false,
+                  })}
+                </p>
                 <p>増分: {item.NewRating - item.OldRating}</p>
               </div>
             ))}
