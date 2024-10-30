@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 
 function App() {
-  const members = ["batora", "a01sa01to", "sor4chi", "shigek", "LLSTREAM", "NakamuraItsuk", "takashin", "hrns", "through","yukikamome316", "kAsA02"];
+  const members = ["batora", "a01sa01to", "sor4chi", "shigek", "LLSTREAM", "NakamuraItsuk", "takashin", "hrns", "through", "yukikamome316", "kAsA02"];
   const [data, setData] = useState(null);
   const [filter, setFilter] = useState("monthly");
 
@@ -33,46 +33,41 @@ function App() {
     setData(data);
   };
 
-  // フィルターを適用
+  // フィルターを適用して空の配列を除外
   const selectedData = useMemo(() => {
     if (!data) return [];
-    if (filter === "lifetime") {
-      return data;
-    } else if (filter === "monthly") {
-      return data.map((d) =>
-        d.filter((item) => {
-          const now = new Date();
-          const end = new Date(item.EndTime);
-          return (
-            now.getMonth() === end.getMonth() &&
-            now.getFullYear() === end.getFullYear()
-          );
-        })
-      );
-    } else if (filter === "yearly") {
-      return data.map((d) =>
-        d.filter((item) => {
-          const now = new Date();
-          const end = new Date(item.EndTime);
-          return now.getFullYear() === end.getFullYear();
-        })
-      );
-    }
+    const filteredData = data.map((d, index) => {
+      const filteredContests = d.filter((item) => {
+        const now = new Date();
+        const end = new Date(item.EndTime);
+        const isSameMonth = now.getMonth() === end.getMonth() && now.getFullYear() === end.getFullYear();
+        const isSameYear = now.getFullYear() === end.getFullYear();
+
+        return item.ContestName && (
+          filter === "monthly" ? isSameMonth : filter === "yearly" ? isSameYear : true
+        );
+      });
+      
+      return { username: members[index], data: filteredContests };
+    });
+    
+    // Remove entries with empty data arrays
+    return filteredData.filter((entry) => entry.data.length > 0);
   }, [data, filter]);
 
   // ユーザー名とデータを結合
   const sortedDataWithNames = useMemo(() => {
     return selectedData
-      .map((d, index) => ({
-        username: members[index],
-        data: d,
-        totalIncrement: d.reduce(
+      .map((entry) => ({
+        username: entry.username,
+        data: entry.data,
+        totalIncrement: entry.data.reduce(
           (acc, item) => acc + (item.NewRating - item.OldRating),
           0
         ),
       }))
       .sort((a, b) => b.totalIncrement - a.totalIncrement);
-  }, [selectedData, members]);
+  }, [selectedData]);
 
   const handleChange = (e) => {
     setFilter(e.target.value);
