@@ -135,7 +135,9 @@ function App() {
             {user.data &&
               user.data.map((item, i) => (
                 <div className="contest-details" key={i}>
-                  <p className="bold-details">{item.ContestName}</p>
+                  <a href={`https://${item.ContestScreenName}`} className="bold-details">
+                    {item.ContestName}
+                  </a>
                   <p className="details">
                     終了:{" "}
                     {new Date(item.EndTime).toLocaleString("ja-JP", {
