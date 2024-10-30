@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useState, useEffect, useMemo } from "react";
 import "./App.css";
 
@@ -134,12 +135,28 @@ function App() {
             {sortedDataWithNames.map((user, index) => (
               <details key={index} className="user-details">
                 <summary>
-                  {index + 1}. {user.username} 増分の合計: {user.totalIncrement}
+                  {index + 1}. {user.username} 増分:{" "}
+                  <span
+                    className={
+                      user.totalIncrement > 0
+                        ? "positive"
+                        : user.totalIncrement < 0
+                        ? "negative"
+                        : ""
+                    }
+                  >
+                    {user.totalIncrement > 0
+                      ? `+${user.totalIncrement}`
+                      : user.totalIncrement}
+                  </span>
                 </summary>
                 {user.data &&
                   user.data.map((item, i) => (
                     <div className="contest-details" key={i}>
-                      <a href={`https://${item.ContestScreenName}`} className="bold-details">
+                      <a
+                        href={`https://${item.ContestScreenName}`}
+                        className="bold-details"
+                      >
                         {item.ContestName}
                       </a>
                       <p className="details">
@@ -157,7 +174,19 @@ function App() {
                       <p className="details">
                         レート : {item.OldRating} → {item.NewRating}
                       </p>
-                      <p className="bold-details">増分 : {item.NewRating - item.OldRating}</p>
+                      <p
+                        className={clsx({
+                          details: true,
+                          positive: item.NewRating - item.OldRating > 0,
+                          negative: item.NewRating - item.OldRating < 0,
+                        })}
+                      >
+                        増分 :{" "}
+                        {item.NewRating - item.OldRating > 0
+                          ? `+${item.NewRating - item.OldRating}`
+                          : item.NewRating - item.OldRating}
+
+                      </p>
                     </div>
                   ))}
               </details>

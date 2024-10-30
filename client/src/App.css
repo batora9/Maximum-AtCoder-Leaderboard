@@ -48,3 +48,10 @@
   text-align: center;
   padding: 2rem;
 }
+.positive {
+  color: blue;
+}
+
+.negative {
+  color: red;
+}
