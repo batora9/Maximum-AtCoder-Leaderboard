@@ -30,7 +30,7 @@ app.post("/api/atcoder/users", async (c) => {
       data,
       timestamp: Date.now(),
     }));
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
   return c.json(userData);
 });
